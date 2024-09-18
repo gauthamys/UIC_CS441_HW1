@@ -1,5 +1,4 @@
 # Gautham Satyanarayana
-<hr/>
 
 gsaty@uic.edu
 
