@@ -8,7 +8,9 @@ lazy val root = project
 
     scalaVersion := scala3Version,
     libraryDependencies += "org.scalameta" %% "munit" % "1.0.0" % Test,
-      libraryDependencies += "com.knuddels" % "jtokkit" % "1.1.0"
+    libraryDependencies += "com.knuddels" % "jtokkit" % "1.1.0",
+    libraryDependencies += "org.deeplearning4j" % "deeplearning4j-nlp" % "1.0.0-M2.1",
+    libraryDependencies += "org.nd4j" % "nd4j-native-platform" % "1.0.0-M2.1"
 
   )
 

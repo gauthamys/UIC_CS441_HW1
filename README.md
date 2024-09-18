@@ -1,4 +1,7 @@
-## sbt project compiled with Scala 3
+# Gautham Satyanarayana
+<hr/>
+
+gsaty@uic.edu
 
 ### Usage
 
