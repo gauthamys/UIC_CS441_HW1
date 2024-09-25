@@ -3,8 +3,6 @@
 gsaty@uic.edu
 
 ### Usage
-
-This is a normal sbt project. You can compile code with `sbt compile`, run it with `sbt run`, and `sbt console` will start a Scala 3 REPL.
-
-For more information on the sbt-dotty plugin, see the
-[scala3-example-project](https://github.com/scala/scala3-example-project/blob/main/README.md).
+1. `sbt update` - Installs the dependencies in build.sbt
+2. `sbt assembly` - The jar file should be created in the /target directory
+3. `hadoop jar <name of jar file> <path to input> <path to output>` - Runs the map reduce job on hadoop locally based on your config

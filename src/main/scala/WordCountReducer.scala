@@ -1,6 +1,5 @@
 import org.apache.hadoop.io.{LongWritable, Text}
 import org.apache.hadoop.mapreduce.Reducer
-// import scala.collection.JavaConverters._
 import scala.jdk.CollectionConverters._
 
 class WordCountReducer extends Reducer[Text, LongWritable, Text, LongWritable] {
