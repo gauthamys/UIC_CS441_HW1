@@ -1,13 +1,15 @@
+package stattask
+
+import com.knuddels.jtokkit.Encodings
 import com.knuddels.jtokkit.api.{EncodingType, ModelType}
 import org.apache.hadoop.io.{IntWritable, LongWritable, Text}
 import org.apache.hadoop.mapreduce.Mapper
-import com.knuddels.jtokkit.Encodings
 
 class StatMapper extends Mapper[LongWritable, Text, Text, LongWritable] {
   private val word = new IntWritable()
   private val one = new LongWritable(1)
   private val registry = Encodings.newDefaultEncodingRegistry()
-  private val encoding = registry.getEncoding(EncodingType.CL100K_BASE)
+  private val encoding = registry.getEncodingForModel(ModelType.GPT_4)
   // private val logger = new Logger()
 
   override def map(key: LongWritable, value: Text, context: Mapper[LongWritable, Text, Text, LongWritable]#Context): Unit = {
@@ -19,7 +21,7 @@ class StatMapper extends Mapper[LongWritable, Text, Text, LongWritable] {
     cleanedText = cleanedText.replaceAll("[0-9]", "")
     cleanedText = cleanedText.replace("[", "")
     cleanedText = cleanedText.replace("]", "")
-    cleanedText = cleanedText.replace("\n", "")
+    cleanedText = cleanedText.replace("\n", " ")
 
     // logger.info("Splitting Tokens")
     val tokens = cleanedText.split("\\s+")

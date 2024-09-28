@@ -1,5 +1,7 @@
+package stattask
+
 import com.knuddels.jtokkit.Encodings
-import com.knuddels.jtokkit.api.{EncodingType, IntArrayList}
+import com.knuddels.jtokkit.api.{EncodingType, IntArrayList, ModelType}
 import org.apache.hadoop.io
 import org.apache.hadoop.io.{LongWritable, Text}
 import org.apache.hadoop.mapreduce.Reducer
@@ -8,7 +10,7 @@ import scala.collection.mutable
 
 class StatReducer extends Reducer[Text, LongWritable, Text, Text] {
   private val registry = Encodings.newDefaultEncodingRegistry()
-  private val encoding = registry.getEncoding(EncodingType.CL100K_BASE)
+  private val encoding = registry.getEncodingForModel(ModelType.GPT_4)
   private val vocabulary = new mutable.HashSet[String]()
   
   override def reduce(key: Text, values: java.lang.Iterable[LongWritable], context: Reducer[Text, LongWritable, Text, Text]#Context): Unit = {
