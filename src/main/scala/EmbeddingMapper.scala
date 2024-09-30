@@ -1,5 +1,3 @@
-package embeddingtask
-
 import org.apache.hadoop.io
 import org.apache.hadoop.io.{BytesWritable, LongWritable, Text}
 import org.apache.hadoop.mapreduce.Mapper
@@ -9,11 +7,10 @@ import org.deeplearning4j.text.sentenceiterator.CollectionSentenceIterator
 import org.deeplearning4j.text.tokenization.tokenizer.preprocessor.CommonPreprocessor
 import org.deeplearning4j.text.tokenization.tokenizerfactory.DefaultTokenizerFactory
 
-import scala.jdk.CollectionConverters
 import java.io.ByteArrayOutputStream
 import java.util
-import scala.jdk.CollectionConverters.*
 import scala.collection.mutable.ListBuffer
+import scala.jdk.CollectionConverters.*
 
 class EmbeddingMapper extends Mapper[LongWritable, Text, Text, BytesWritable] {
   override def map(key: LongWritable, value: Text, context: Mapper[LongWritable, Text, Text, BytesWritable]#Context): Unit = {
@@ -35,15 +32,14 @@ class EmbeddingMapper extends Mapper[LongWritable, Text, Text, BytesWritable] {
       .build()
     word2Vec.fit()
 
-    // Serialize the Word2Vec model into binary format
-    val byteArrayOutputStream = new ByteArrayOutputStream()
-    WordVectorSerializer.writeWord2VecModel(word2Vec, byteArrayOutputStream)
-
-    // Convert the ByteArrayOutputStream to a byte array
-    var modelBytes = new ByteArrayOutputStream()
-    modelBytes = byteArrayOutputStream
-
-    context.write(new Text("model"), new BytesWritable(modelBytes.toByteArray))
+//    // Serialize the Word2Vec model into binary format
+//    val byteArrayOutputStream = new ByteArrayOutputStream()
+//    WordVectorSerializer.writeWord2VecModel(word2Vec, byteArrayOutputStream)
+//
+//    // Convert the ByteArrayOutputStream to a byte array
+//    var modelBytes = new ByteArrayOutputStream()
+//    modelBytes = byteArrayOutputStream
+//    context.write(new Text("model"), new BytesWritable(modelBytes.toByteArray))
   }
 
 }
