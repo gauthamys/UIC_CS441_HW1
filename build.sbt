@@ -13,6 +13,8 @@ lazy val root = project
       "org.deeplearning4j" % "deeplearning4j-nlp" % "1.0.0-M2.1",
       "org.deeplearning4j" % "deeplearning4j-core" % "1.0.0-M2.1",
       "org.nd4j" % "nd4j-native-platform" % "1.0.0-M2.1",
+      "org.bytedeco" % "openblas-platform" % "0.3.26-1.5.10",
+      "org.bytedeco" % "openblas" % "0.3.26-1.5.10",
       "org.apache.hadoop" % "hadoop-common" % "3.4.0",
       "org.apache.hadoop" % "hadoop-hdfs" % "3.4.0",
       "org.apache.hadoop" % "hadoop-mapreduce-client-core" % "3.4.0",
@@ -21,8 +23,11 @@ lazy val root = project
       "org.apache.hadoop" % "hadoop-yarn-common" % "3.4.0",
     ),
     assemblyMergeStrategy in assembly := {
-      case PathList("META-INF", xs @ _*) => MergeStrategy.discard
-      case x => MergeStrategy.first
+      case PathList("META-INF", _@xs_*) => MergeStrategy.discard
+      case PathList("META-INF", "services", _@xs_*) => MergeStrategy.concat
+      case PathList("META-INF", "MANIFEST.MF") => MergeStrategy.discard
+      case "reference.conf" => MergeStrategy.concat
+      case _ => MergeStrategy.first
     }
   )
 
