@@ -24,6 +24,8 @@ object Main {
     }
     else if (jobName == "embedding") {
       // Set the Mapper and Reducer classes
+      job.setMapOutputKeyClass(classOf[Text])
+      job.setMapOutputValueClass(classOf[LongWritable])
       job.setMapperClass(classOf[EmbeddingMapper])
       job.setReducerClass(classOf[EmbeddingReducer])
     }

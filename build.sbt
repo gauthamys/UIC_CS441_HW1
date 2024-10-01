@@ -14,6 +14,7 @@ lazy val root = project
       "org.deeplearning4j" % "deeplearning4j-nlp" % "1.0.0-M2.1",
       "org.deeplearning4j" % "deeplearning4j-core" % "1.0.0-M2.1",
       "org.nd4j" % "nd4j-native" % "1.0.0-M2.1",
+      "org.nd4j" % "nd4j-native-platform" % "1.0.0-M2.1",
 
       "org.apache.hadoop" % "hadoop-common" % "3.4.0",
       "org.apache.hadoop" % "hadoop-hdfs" % "3.4.0",
