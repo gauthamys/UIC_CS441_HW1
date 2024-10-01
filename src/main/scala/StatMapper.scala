@@ -4,7 +4,6 @@ import org.apache.hadoop.io.{IntWritable, LongWritable, Text}
 import org.apache.hadoop.mapreduce.Mapper
 
 class StatMapper extends Mapper[LongWritable, Text, Text, LongWritable] {
-  private val word = new IntWritable()
   private val one = new LongWritable(1)
   private val registry = Encodings.newDefaultEncodingRegistry()
   private val encoding = registry.getEncoding(EncodingType.CL100K_BASE)
@@ -17,7 +16,7 @@ class StatMapper extends Mapper[LongWritable, Text, Text, LongWritable] {
     cleanedText = cleanedText.replace("[", "")
     cleanedText = cleanedText.replace("]", "")
     cleanedText = cleanedText.replace("\n", " ")
-    
+
     val tokens = cleanedText.split("\\s+")
     tokens.foreach { token =>
       val bpeTokens = encoding.encode(token)

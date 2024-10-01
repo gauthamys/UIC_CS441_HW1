@@ -1,15 +1,10 @@
-import org.apache.hadoop.io
-import org.apache.hadoop.io.{BytesWritable, LongWritable, Text}
+import org.apache.hadoop.io.{LongWritable, Text}
 import org.apache.hadoop.mapreduce.Mapper
-import org.deeplearning4j.models.embeddings.loader.WordVectorSerializer
 import org.deeplearning4j.models.word2vec.Word2Vec
 import org.deeplearning4j.text.sentenceiterator.CollectionSentenceIterator
 import org.deeplearning4j.text.tokenization.tokenizer.preprocessor.CommonPreprocessor
 import org.deeplearning4j.text.tokenization.tokenizerfactory.DefaultTokenizerFactory
 
-import java.io.ByteArrayOutputStream
-import java.util
-import scala.collection.mutable
 import scala.collection.mutable.ListBuffer
 import scala.jdk.CollectionConverters._
 
@@ -22,7 +17,7 @@ class EmbeddingMapper extends Mapper[LongWritable, Text, Text, Array[Double]] {
       sentences.add(s)
     })
     val t = new DefaultTokenizerFactory()
-    //t.setTokenPreProcessor(new CommonPreprocessor())
+    t.setTokenPreProcessor(new CommonPreprocessor())
 
     val iter = new CollectionSentenceIterator(sentences)
     val word2Vec = new Word2Vec.Builder()
