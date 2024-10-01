@@ -1,16 +1,17 @@
 import org.apache.hadoop.io.{BytesWritable, LongWritable, Text}
 import org.apache.hadoop.mapreduce.Reducer
 import org.deeplearning4j.models.embeddings.loader.WordVectorSerializer
+import org.nd4j.linalg.api.ndarray.INDArray
+import org.nd4j.nativeblas.Nd4jBlas
 
 import java.io.ByteArrayInputStream
 import java.lang
+import scala.jdk.CollectionConverters._
 
-class EmbeddingReducer extends Reducer[Text, BytesWritable, LongWritable, BytesWritable]{
-  override def reduce(key: Text, values: lang.Iterable[BytesWritable], context: Reducer[Text, BytesWritable, Text, BytesWritable]#Context): Unit = {
-    val iter = values.iterator() // iterate over values
-    while (iter.hasNext) {
-      val w2v = WordVectorSerializer.readAsBinaryNoLineBreaks(new ByteArrayInputStream(iter.next().getBytes))
-      context.write(new Text(key.toString), new BytesWritable(iter.next().getBytes))
-    }
+class EmbeddingReducer extends Reducer[Text, Array[Double], Text, Array[Double]]{
+  override def reduce(key: Text, values: lang.Iterable[Array[Double]], context: Reducer[Text, Array[Double], Text, Array[Double]]#Context): Unit = {
+    values.forEach(value => {
+      context.write(key, value)
+    })
   }
 }

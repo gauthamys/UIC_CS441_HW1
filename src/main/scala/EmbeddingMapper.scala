@@ -9,17 +9,20 @@ import org.deeplearning4j.text.tokenization.tokenizerfactory.DefaultTokenizerFac
 
 import java.io.ByteArrayOutputStream
 import java.util
+import scala.collection.mutable
 import scala.collection.mutable.ListBuffer
-import scala.jdk.CollectionConverters.*
+import scala.jdk.CollectionConverters._
 
-class EmbeddingMapper extends Mapper[LongWritable, Text, Text, BytesWritable] {
-  override def map(key: LongWritable, value: Text, context: Mapper[LongWritable, Text, Text, BytesWritable]#Context): Unit = {
+class EmbeddingMapper extends Mapper[LongWritable, Text, Text, Array[Double]] {
+  override def map(key: LongWritable, value: Text, context: Mapper[LongWritable, Text, Text, Array[Double]]#Context): Unit = {
     // Clean and tokenize the input text
-    val strValue = value.toString
-    val sentences : util.Collection[String] = new ListBuffer[String].asJava
-    sentences.add(strValue)
+    val strValue = value.toString.split("\n")
+    val sentences = new ListBuffer[String].asJava
+    strValue.foreach(s => {
+      sentences.add(s)
+    })
     val t = new DefaultTokenizerFactory()
-    t.setTokenPreProcessor(new CommonPreprocessor())
+    //t.setTokenPreProcessor(new CommonPreprocessor())
 
     val iter = new CollectionSentenceIterator(sentences)
     val word2Vec = new Word2Vec.Builder()
@@ -31,15 +34,10 @@ class EmbeddingMapper extends Mapper[LongWritable, Text, Text, BytesWritable] {
       .seed(42)
       .build()
     word2Vec.fit()
-
-//    // Serialize the Word2Vec model into binary format
-//    val byteArrayOutputStream = new ByteArrayOutputStream()
-//    WordVectorSerializer.writeWord2VecModel(word2Vec, byteArrayOutputStream)
-//
-//    // Convert the ByteArrayOutputStream to a byte array
-//    var modelBytes = new ByteArrayOutputStream()
-//    modelBytes = byteArrayOutputStream
-//    context.write(new Text("model"), new BytesWritable(modelBytes.toByteArray))
+    sentences.forEach(sentence => {
+      sentence.split("\\s+").foreach(word => {
+        context.write(new Text(word), word2Vec.getWordVector(word))
+      })
+    })
   }
-
 }

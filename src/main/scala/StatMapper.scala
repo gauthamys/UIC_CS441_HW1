@@ -17,7 +17,7 @@ class StatMapper extends Mapper[LongWritable, Text, Text, LongWritable] {
     cleanedText = cleanedText.replace("[", "")
     cleanedText = cleanedText.replace("]", "")
     cleanedText = cleanedText.replace("\n", " ")
-
+    
     val tokens = cleanedText.split("\\s+")
     tokens.foreach { token =>
       val bpeTokens = encoding.encode(token)

@@ -5,7 +5,7 @@ import org.apache.hadoop.io.{LongWritable, Text}
 import org.apache.hadoop.mapreduce.Reducer
 
 import scala.collection.mutable
-import scala.jdk.CollectionConverters.*
+import scala.jdk.CollectionConverters._
 
 class StatReducer extends Reducer[Text, LongWritable, Text, Text] {
   private val registry = Encodings.newDefaultEncodingRegistry()
@@ -20,10 +20,8 @@ class StatReducer extends Reducer[Text, LongWritable, Text, Text] {
     keys.add(key.toString.toInt)
     context.write(null, new Text(key.toString + "," + encoding.decode(keys) + "," + sum.toString))
   }
-
   override def cleanup(context: Reducer[Text, LongWritable, Text, Text]#Context): Unit = {
     // After processing all words, output the vocabulary size
     context.write(null, new Text(s"Vocabulary Size,${vocabulary.size}"))
   }
-
 }
