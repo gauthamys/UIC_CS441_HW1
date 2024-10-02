@@ -1,3 +1,5 @@
+package EmbeddingTask
+
 import org.apache.hadoop.io.{ArrayWritable, DoubleWritable, Text}
 import org.apache.hadoop.mapreduce.Reducer
 import org.nd4j.linalg.api.ndarray.INDArray

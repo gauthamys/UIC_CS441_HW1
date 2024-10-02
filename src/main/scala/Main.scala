@@ -1,40 +1,28 @@
+import StatTask.{StatMapper, StatReducer}
 import org.apache.hadoop.conf.Configuration
 import org.apache.hadoop.fs.Path
-import org.apache.hadoop.io.{LongWritable, Text}
+import org.apache.hadoop.io.{ArrayWritable, IntWritable, LongWritable, Text}
 import org.apache.hadoop.mapreduce.Job
-import org.apache.hadoop.mapreduce.lib.input.FileInputFormat
-import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat
+import org.apache.hadoop.mapreduce.lib.input.{FileInputFormat, TextInputFormat}
+import org.apache.hadoop.mapreduce.lib.output.{FileOutputFormat, TextOutputFormat}
 
 object Main {
   def main(args: Array[String]): Unit = {
-    if (args.length != 3) {
-      System.err.println("Usage: <\"embedding\" or \"stat\"> <input path> <output path>")
-      System.exit(-1)
-    }
-    val jobName = args(0)
     val conf = new Configuration
-    val job = Job.getInstance(conf, "Token Encoding & Word Count")
-    job.setJarByClass(Main.getClass)
-    if (jobName == "stat") {
-      // Set the Mapper and Reducer classes
-      job.setMapOutputKeyClass(classOf[Text])
-      job.setMapOutputValueClass(classOf[LongWritable])
-      job.setMapperClass(classOf[StatMapper])
-      job.setReducerClass(classOf[StatReducer])
-    }
-    else if (jobName == "embedding") {
-      // Set the Mapper and Reducer classes
-      job.setMapOutputKeyClass(classOf[Text])
-      job.setMapOutputValueClass(classOf[LongWritable])
-      job.setMapperClass(classOf[EmbeddingMapper])
-      job.setReducerClass(classOf[EmbeddingReducer])
-    }
+    val statJob = Job.getInstance(conf, "Word Count")
 
-    // Input and Output paths
-    FileInputFormat.addInputPath(job, new Path(args(1)))
-    FileOutputFormat.setOutputPath(job, new Path(args(2)))
+    statJob.setJarByClass(Main.getClass)
+    statJob.setMapOutputKeyClass(classOf[Text])
+    statJob.setMapOutputValueClass(classOf[LongWritable])
 
-    // Submit the job and wait for completion
-    System.exit(if (job.waitForCompletion(true)) 0 else 1)
+    statJob.setMapperClass(classOf[StatMapper])
+    statJob.setReducerClass(classOf[StatReducer])
+
+    statJob.setMapOutputKeyClass(classOf[Text])
+    statJob.setMapOutputValueClass(classOf[LongWritable])
+
+    FileInputFormat.addInputPath(statJob, new Path(args(0)))
+    FileOutputFormat.setOutputPath(statJob, new Path(args(1)))
+    System.exit(if (statJob.waitForCompletion(true)) 0 else 1)
   }
 }
