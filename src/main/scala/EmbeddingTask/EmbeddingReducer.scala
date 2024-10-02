@@ -9,8 +9,8 @@ import java.lang
 import scala.collection.mutable.ListBuffer
 import scala.jdk.CollectionConverters._
 
-class EmbeddingReducer extends Reducer[LongWritable, Text, LongWritable, Text] {
-  override def reduce(key: LongWritable, values: lang.Iterable[Text], context: Reducer[LongWritable, Text, LongWritable, Text]#Context): Unit = {
+class EmbeddingReducer extends Reducer[Text, Text, Text, Text] {
+  override def reduce(key: Text, values: lang.Iterable[Text], context: Reducer[Text, Text, Text, Text]#Context): Unit = {
     values.forEach(value => {
       context.write(key, value)
     })

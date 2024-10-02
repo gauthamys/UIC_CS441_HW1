@@ -19,4 +19,12 @@ class StrUtil {
     val res = encoded.toArray.mkString(":")
     res
   }
+  def decodeEncoding2String(strEncoded: String): IntArrayList = {
+    val res = new IntArrayList()
+    val x = strEncoded.split(":")
+    x.foreach(i => {
+      res.add(i.toInt)
+    })
+    res
+  }
 }

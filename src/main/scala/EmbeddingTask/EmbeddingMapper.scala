@@ -14,36 +14,33 @@ import org.deeplearning4j.text.tokenization.tokenizerfactory.DefaultTokenizerFac
 import scala.collection.mutable.ListBuffer
 import scala.jdk.CollectionConverters._
 
-class EmbeddingMapper extends Mapper[LongWritable, Text, LongWritable, Text] {
+class EmbeddingMapper extends Mapper[LongWritable, Text, Text, Text] {
   private val registry = Encodings.newDefaultEncodingRegistry()
   private val encoding = registry.getEncoding(EncodingType.CL100K_BASE)
   private val util = new StrUtil()
-  private val sentence = new ListBuffer[String].asJavaCollection
-  override def map(key: LongWritable, value: Text, context: Mapper[LongWritable, Text, LongWritable, Text]#Context): Unit = {
-    val words = util.cleanTextToWords(value)
-    var res = ""
-    if (words.length > 0) {
-      res = words.map(word => {
-        val encoded = encoding.encode(word)
-        util.encoding2String(encoded)
-      }).mkString(" ")
-//      sentence.add(res)
-      context.write(key, new Text(res))
-    }
 
+  override def map(key: LongWritable, value: Text, context: Mapper[LongWritable, Text, Text, Text]#Context): Unit = {
+    val longSentence = new ListBuffer[String].asJava
+    val words = util.cleanTextToWords(value)
+    val res = words.map(word => {
+      val encoded = encoding.encode(word)
+      util.encoding2String(encoded)
+    }).mkString(" ")
+    longSentence.add(res)
+    //context.write(key, new Text(res))
+    val word2Vec = new Word2Vec.Builder()
+      .minWordFrequency(1)
+      .tokenizerFactory(new DefaultTokenizerFactory())
+      .iterate(new CollectionSentenceIterator(longSentence))
+      .layerSize(100)
+      .windowSize(5)
+      .seed(42)
+      .build()
+    word2Vec.fit()
+    word2Vec.getVocab.words().forEach(word => {
+      val vec = word2Vec.getWordVector(word)
+      context.write(new Text(encoding.decode(util.decodeEncoding2String(word))), new Text(vec.mkString(",")))
+    })
   }
 
-//  override def cleanup(context: Mapper[LongWritable, Text, LongWritable, Text]#Context): Unit = {
-//    val t = new DefaultTokenizerFactory()
-//    t.setTokenPreProcessor(new CommonPreprocessor())
-//    val word2Vec = new Word2Vec.Builder()
-//      .minWordFrequency(1)
-//      .tokenizerFactory(t)
-//      .iterate(new CollectionSentenceIterator(sentences))
-//      .layerSize(100)
-//      .windowSize(5)
-//      .seed(42)
-//      .build()
-//    word2Vec.fit()
-//  }
 }

@@ -16,7 +16,7 @@ object Main {
     val jobName = args(0)
 
     if(jobName == "embedding") {
-      job.setMapOutputKeyClass(classOf[LongWritable])
+      job.setMapOutputKeyClass(classOf[Text])
       job.setMapOutputValueClass(classOf[Text])
 
       job.setMapperClass(classOf[EmbeddingMapper])
