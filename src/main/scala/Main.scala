@@ -1,3 +1,4 @@
+import EmbeddingTask.{EmbeddingMapper, EmbeddingReducer}
 import StatTask.{StatMapper, StatReducer}
 import org.apache.hadoop.conf.Configuration
 import org.apache.hadoop.fs.Path
@@ -9,20 +10,34 @@ import org.apache.hadoop.mapreduce.lib.output.{FileOutputFormat, TextOutputForma
 object Main {
   def main(args: Array[String]): Unit = {
     val conf = new Configuration
-    val statJob = Job.getInstance(conf, "Word Count")
+    val job = Job.getInstance(conf, "Word Count & Embedding")
+    job.setJarByClass(Main.getClass)
 
-    statJob.setJarByClass(Main.getClass)
-    statJob.setMapOutputKeyClass(classOf[Text])
-    statJob.setMapOutputValueClass(classOf[LongWritable])
+    val jobName = args(0)
 
-    statJob.setMapperClass(classOf[StatMapper])
-    statJob.setReducerClass(classOf[StatReducer])
+    if(jobName == "embedding") {
+      job.setMapOutputKeyClass(classOf[Text])
+      job.setMapOutputValueClass(classOf[LongWritable])
 
-    statJob.setMapOutputKeyClass(classOf[Text])
-    statJob.setMapOutputValueClass(classOf[LongWritable])
+      job.setMapperClass(classOf[EmbeddingMapper])
+      job.setReducerClass(classOf[EmbeddingReducer])
 
-    FileInputFormat.addInputPath(statJob, new Path(args(0)))
-    FileOutputFormat.setOutputPath(statJob, new Path(args(1)))
-    System.exit(if (statJob.waitForCompletion(true)) 0 else 1)
+      job.setMapOutputKeyClass(classOf[Text])
+      job.setMapOutputValueClass(classOf[LongWritable])
+    }
+    else if (jobName == "stat") {
+      job.setMapOutputKeyClass(classOf[Text])
+      job.setMapOutputValueClass(classOf[LongWritable])
+
+      job.setMapperClass(classOf[StatMapper])
+      job.setReducerClass(classOf[StatReducer])
+
+      job.setMapOutputKeyClass(classOf[Text])
+      job.setMapOutputValueClass(classOf[LongWritable])
+
+    }
+    FileInputFormat.addInputPath(job, new Path(args(1)))
+    FileOutputFormat.setOutputPath(job, new Path(args(2)))
+    System.exit(if (job.waitForCompletion(true)) 0 else 1)
   }
 }
