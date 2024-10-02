@@ -16,14 +16,11 @@ object Main {
     val jobName = args(0)
 
     if(jobName == "embedding") {
-      job.setMapOutputKeyClass(classOf[Text])
-      job.setMapOutputValueClass(classOf[LongWritable])
+      job.setMapOutputKeyClass(classOf[LongWritable])
+      job.setMapOutputValueClass(classOf[Text])
 
       job.setMapperClass(classOf[EmbeddingMapper])
       job.setReducerClass(classOf[EmbeddingReducer])
-
-      job.setMapOutputKeyClass(classOf[Text])
-      job.setMapOutputValueClass(classOf[LongWritable])
     }
     else if (jobName == "stat") {
       job.setMapOutputKeyClass(classOf[Text])
