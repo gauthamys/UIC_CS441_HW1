@@ -8,7 +8,7 @@ import scala.jdk.CollectionConverters._
 
 class EmbeddingReducer extends Reducer[Text, Text, Text, Text] {
   private def convertVec2Arr(v: String): Array[Double] = {
-    v.split(",").map(x => x.toDouble).toArray
+    v.split(",").map(x => x.toDouble)
   }
   override def reduce(key: Text, values: lang.Iterable[Text], context: Reducer[Text, Text, Text, Text]#Context): Unit = {
     val acc = new Array[Double](100)

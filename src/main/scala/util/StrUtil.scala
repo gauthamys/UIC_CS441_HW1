@@ -5,7 +5,7 @@ import org.apache.hadoop.io.Text
 
 class StrUtil {
   private def clean(v: Text): String = {
-    var clean = v.toString.trim.toLowerCase.replaceAll("[,./?\"{}()~@!#$%^&*:;0-9']", "")
+    var clean = v.toString.trim.toLowerCase.replaceAll("[,./?\"{}()~+@!#$%^&*:;0-9']", "")
     clean = clean.replace("[", "")
     clean = clean.replace("]", "")
     clean = clean.replaceAll("-+", "")
