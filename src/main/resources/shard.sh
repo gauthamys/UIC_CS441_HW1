@@ -1,3 +1,3 @@
 cat ulyss12.txt | tr '\r\n' ' ' > ulyss12-sharded-tmp.txt
-python3 shard.py
+./shard-helper.sh
 rm ulyss12-sharded-tmp.txt

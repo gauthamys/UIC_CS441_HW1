@@ -1,7 +1,8 @@
 # Distributed Word Embedding and Similarity Calculation
 
 Author - Gautham Satyanarayana <br />
-Email - gsaty@uic.edu
+Email - gsaty@uic.edu <br />
+UIN - 659368048
 
 ## Introudction
 As part of UIC-CS441 Engineering Distributed Objects for Cloud Computing, this project demonstrates how to train an LLM. For the first Homework, we build a mapreduce model to tokenize, encode, and finally compute word embeddings and find similar words based on these embeddings.
