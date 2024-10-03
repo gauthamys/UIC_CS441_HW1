@@ -1,18 +1,23 @@
 package EmbeddingTask
 
-import org.apache.hadoop.io.{ArrayWritable, DoubleWritable, LongWritable, Text}
+import org.apache.hadoop.io.Text
 import org.apache.hadoop.mapreduce.Reducer
-import org.nd4j.linalg.api.ndarray.INDArray
-import org.nd4j.linalg.factory.Nd4j
 
 import java.lang
-import scala.collection.mutable.ListBuffer
 import scala.jdk.CollectionConverters._
 
 class EmbeddingReducer extends Reducer[Text, Text, Text, Text] {
+  private def convertVec2Arr(v: String): Array[Double] = {
+    v.split(",").map(x => x.toDouble).toArray
+  }
   override def reduce(key: Text, values: lang.Iterable[Text], context: Reducer[Text, Text, Text, Text]#Context): Unit = {
-    values.forEach(value => {
-      context.write(key, value)
+    val acc = new Array[Double](100)
+    values.asScala.foreach(value => {
+      val vec = convertVec2Arr(value.toString)
+      for (i <- 0 until 100) {
+        acc(i) += vec(i) / 100
+      }
     })
+    context.write(key, new Text(acc.mkString("[", ",", "]")))
   }
 }
