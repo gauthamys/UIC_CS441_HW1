@@ -18,4 +18,4 @@ def process_file(input_file, output_file, n):
 # Example usage
 input_file = 'embeddings.txt'  # Replace with your input file path
 output_file = 'embeddings-sharded.txt'  # Replace with your output file path
-process_file(input_file, output_file, 10000)
+process_file(input_file, output_file, 5000)

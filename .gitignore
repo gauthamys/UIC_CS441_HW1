@@ -1,8 +1,6 @@
 # macOS
 .DS_Store
 
-src/main/resources/embeddings-sharded.txt
-
 # sbt specific
 dist/*
 target/

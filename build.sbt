@@ -29,7 +29,8 @@ lazy val root = project
       case PathList("META-INF", "MANIFEST.MF") => MergeStrategy.discard
       case "reference.conf" => MergeStrategy.concat
       case _ => MergeStrategy.first
-    }
+    },
+    assembly / assemblyJarName := "hw1.jar"
   )
 
 

@@ -1,3 +1,4 @@
+import CosineSimilarity.{CosSimMapper, CosSimReducer}
 import EmbeddingTask.{EmbeddingMapper, EmbeddingReducer}
 import StatTask.{StatMapper, StatReducer}
 import org.apache.hadoop.conf.Configuration
@@ -29,8 +30,13 @@ object Main {
       job.setMapperClass(classOf[StatMapper])
       job.setReducerClass(classOf[StatReducer])
 
+    }
+    else if (jobName == "cosSim") {
       job.setMapOutputKeyClass(classOf[Text])
-      job.setMapOutputValueClass(classOf[LongWritable])
+      job.setMapOutputValueClass(classOf[Text])
+
+      job.setMapperClass(classOf[CosSimMapper])
+      job.setReducerClass(classOf[CosSimReducer])
 
     }
     FileInputFormat.addInputPath(job, new Path(args(1)))

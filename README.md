@@ -27,7 +27,7 @@ As part of UIC-CS441 Engineering Distributed Objects for Cloud Computing, this p
 
 ## Data Flow and Logic
 ### Hadoop / EMR Flow
-![hadoop-flow.png](images/hadoop-flow.png)
+<img src="images/hadoop-flow.png" alt="hadoop-flow" width="65%">
 
 ### Data Structures and Flow
 1. WordCount Job
@@ -61,7 +61,9 @@ As part of UIC-CS441 Engineering Distributed Objects for Cloud Computing, this p
 1. Clone this repository
 2. `cd` into the root of the project repository
 3. `sbt update` - Installs the dependencies in build.sbt
-4. `sbt assembly` - The jar file should be created in the /target directory
-5. `hdfs dfs -put ./src/main/resources/ulyss12-sharded.txt /input/ulyss12-sharded.txt` - upload the sharded input file to hdfs
+4. `sbt assembly` - The jar file should be created in the `/target/scala-2.13` directory
+5. `hdfs dfs -put ./src/main/resources/*.txt /input` - upload all the input files to hdfs
 6. `hadoop jar ./target/scala-2.13/hw1-assembly-0.1.0-SNAPSHOT.jar stat /input/ulyss12-sharded.txt /output-stat` - Runs the map reduce job for generating vocabulary and word count on hadoop locally.
-7. `hadoop jar <name of jar file> embedding /input/ulyss12-sharded.txt /output-embedding` - Runs the map reduce job for computing word embedding on hadoop locally.
+7. `hadoop jar <name of jar file> stat /input/ulyss12-sharded.txt /output-wc` - Runs the map reduce job for computing word count and vocabulary on hadoop locally.
+8. `hadoop jar <name of jar file> embedding /input/ulyss12-sharded.txt /output-embedding` - Runs the map reduce job for computing word embeddings on hadoop locally.
+9. `hadoop jar <name of jar file> cosSim /input/ulyss12-sharded.txt /output-cosSim` - Runs the map reduce job for finding similar words for each word in the vocabulary on hadoop locally.
