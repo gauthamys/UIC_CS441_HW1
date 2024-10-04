@@ -1,14 +1,13 @@
 package EmbeddingTask
 
 import com.knuddels.jtokkit.Encodings
-import com.knuddels.jtokkit.api.{EncodingType, IntArrayList}
+import com.knuddels.jtokkit.api.EncodingType
 import org.apache.hadoop.io.{LongWritable, Text}
 import org.apache.hadoop.mapreduce.Mapper
 
 import util.StrUtil
 import org.deeplearning4j.models.word2vec.Word2Vec
 import org.deeplearning4j.text.sentenceiterator.CollectionSentenceIterator
-import org.deeplearning4j.text.tokenization.tokenizer.preprocessor.CommonPreprocessor
 import org.deeplearning4j.text.tokenization.tokenizerfactory.DefaultTokenizerFactory
 
 import scala.collection.mutable.ListBuffer

@@ -1,0 +1,5 @@
+package CosineSimilarity
+
+class CosSimReducer {
+
+}
