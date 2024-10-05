@@ -38,6 +38,8 @@ As part of UIC-CS441 Engineering Distributed Objects for Cloud Computing, this p
       1. For `<key: Text, values: Iterable[IntWritable]>` sum all the values
       2. Format a resulting writable Text as `s"$word, $encodingStr, $sum"`
       3. Output this resulting string; example - `hello,96,54`
+
+![wordcountflow.png](images/wordcountflow.png)
 2. Embedding Job
    1. Mapper
       1. On the sharded data mapped as `<key, line>`, clean the line as mentioned in the previous step, and tokenise the words to their byte pair encodings
@@ -51,8 +53,16 @@ As part of UIC-CS441 Engineering Distributed Objects for Cloud Computing, this p
       1. For every pair of key and values - word and array of vectors `<word: Text, vectors: Iterable[String]>`, Deserialize them into `Array[Double]`
       2. Sum up these vectors on each dimension and divide each dimension by the number of dimensions chosen
       3. Output this averaged vector as the resulting word embedding for this word as `<word: Text, avgVector: Text(v1, v2, ... , vn)>`
-3. Cosine Similarity Job
 
+![embeddingflow.png](images/embeddingflow.png)
+3. Cosine Similarity Job
+   1. Mapper
+      2. The input line comes from the sharded embeddings file where each line contains 5000 vectors
+      3. For every pair of vectors in this list, compute the cosine similarity and if it is greater than a set threshold, emit this pair along with the similarity as `word1, (word2, similarity)`
+   4. Reducer
+      5. For every `wordI, Iterable[(wordJ, simIJ)]` sort the Iterable and emit the top 5 wordJ for wordI with highest similarity scores
+
+![cosineflow.png](images/cosineflow.png)
 ## Test Suite
 
 ## Results
