@@ -62,6 +62,10 @@ As part of UIC-CS441 Engineering Distributed Objects for Cloud Computing, this p
       1. For every `wordI, Iterable[(wordJ, simIJ)]` sort the Iterable and emit the top 5 wordJ for wordI with highest similarity scores
 
 ![cosineflow.png](images/cosineflow.png)<br />
+
+## EMR Flow
+Explained in the YouTube video linked above
+
 ## Test Suite
 Tests are found in `/src/test/scala/Suite.scala` or just run from root
 
