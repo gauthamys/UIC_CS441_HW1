@@ -63,7 +63,11 @@ As part of UIC-CS441 Engineering Distributed Objects for Cloud Computing, this p
 
 ![cosineflow.png](images/cosineflow.png)<br />
 ## Test Suite
+Tests are found in `/src/test/scala/Suite.scala` or just run from root
 
+```angular2html
+sbt test
+```
 
 ## Results
 1. WordCount Results are found in `/src/main/resources/wordcount.txt` (Vocabulary Size result in last line of file, emitted by reducer)
@@ -75,8 +79,23 @@ As part of UIC-CS441 Engineering Distributed Objects for Cloud Computing, this p
 2. `cd` into the root of the project repository
 3. `sbt update` - Installs the dependencies in build.sbt
 4. `sbt assembly` - The jar file should be created in the `/target/scala-2.13` directory
-5. `hdfs dfs -put ./src/main/resources/*.txt /input` - upload all the input files to hdfs
-6. `hadoop jar ./target/scala-2.13/hw1.jar stat /input/ulyss12-sharded.txt /output-stat` - Runs the map reduce job for generating vocabulary and word count on hadoop locally.
-7. `hadoop jar <name of jar file> stat /input/ulyss12-sharded.txt /output-wc` - Runs the map reduce job for computing word count and vocabulary on hadoop locally.
-8. `hadoop jar <name of jar file> embedding /input/ulyss12-sharded.txt /output-embedding` - Runs the map reduce job for computing word embeddings on hadoop locally.
-9. `hadoop jar <name of jar file> cosSim /input/ulyss12-sharded.txt /output-cosSim` - Runs the map reduce job for finding similar words for each word in the vocabulary on hadoop locally.
+5. upload all the input files to hdfs 
+```angular2html
+hdfs dfs -put ./src/main/resources/*.txt /input
+```
+6. Runs the map reduce job for generating vocabulary and word count on hadoop locally.
+```angular2html
+hadoop jar ./target/scala-2.13/hw1.jar stat /input/ulyss12-sharded.txt /output-stat
+```
+7. Runs the map reduce job for computing word count and vocabulary on hadoop locally.
+```
+hadoop jar <name of jar file> stat /input/ulyss12-sharded.txt /output-wc
+```
+8. Runs the map reduce job for computing word embeddings on hadoop locally.
+```
+hadoop jar <name of jar file> embedding /input/ulyss12-sharded.txt /output-embedding
+```
+9. Runs the map reduce job for finding similar words for each word in the vocabulary on hadoop locally.
+```
+hadoop jar <name of jar file> cosSim /input/ulyss12-sharded.txt /output-cosSim
+```
