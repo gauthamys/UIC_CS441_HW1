@@ -5,8 +5,7 @@ Email - gsaty@uic.edu <br />
 UIN - 659368048
 
 ## Introudction
-As part of UIC-CS441 Engineering Distributed Objects for Cloud Computing, this project demonstrates how to train an LLM. For the first Homework, we build a mapreduce model to tokenize, encode, and finally compute word embeddings and find similar words based on these embeddings.
-<br/> The implementation follows a cluster run on AWS EMR where a Word2Vec model is trained independently on each mapper and the embeddings are averaged in the reducer for each token.
+As part of UIC-CS441 Engineering Distributed Objects for Cloud Computing, this project demonstrates how to train an LLM. For the first Homework, we build a mapreduce model to tokenize, encode, and finally compute word embeddings and find similar words based on these embeddings. The implementation follows a cluster run on AWS EMR where a Word2Vec model is trained independently on each mapper and the embeddings are averaged in the reducer for each token.
 
 ## Strategies & Frameworks
 - Dataset - Books from Project Gutenberg 
@@ -65,7 +64,11 @@ As part of UIC-CS441 Engineering Distributed Objects for Cloud Computing, this p
 ![cosineflow.png](images/cosineflow.png)
 ## Test Suite
 
+
 ## Results
+1. WordCount Results are found in `/src/main/resources/wordcount.txt`
+2. Embedding Results are found in `/src/main/resources/embeddings.txt`
+3. Cosine Results are found in `/src/main/resources/similarity.txt`
 
 ## Usage
 1. Clone this repository
