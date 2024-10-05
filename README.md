@@ -56,10 +56,10 @@ As part of UIC-CS441 Engineering Distributed Objects for Cloud Computing, this p
 ![embeddingflow.png](images/embeddingflow.png)<br /><br />
 3. Cosine Similarity Job
    1. Mapper
-      2. The input line comes from the sharded embeddings file where each line contains 5000 vectors
-      3. For every pair of vectors in this list, compute the cosine similarity and if it is greater than a set threshold, emit this pair along with the similarity as `word1, (word2, similarity)`
-   4. Reducer
-      5. For every `wordI, Iterable[(wordJ, simIJ)]` sort the Iterable and emit the top 5 wordJ for wordI with highest similarity scores
+      1. The input line comes from the sharded embeddings file where each line contains 5000 vectors
+      2. For every pair of vectors in this list, compute the cosine similarity and if it is greater than a set threshold, emit this pair along with the similarity as `word1, (word2, similarity)`
+   2. Reducer
+      1. For every `wordI, Iterable[(wordJ, simIJ)]` sort the Iterable and emit the top 5 wordJ for wordI with highest similarity scores
 
 ![cosineflow.png](images/cosineflow.png)<br />
 ## Test Suite
