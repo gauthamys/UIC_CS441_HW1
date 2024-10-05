@@ -20,8 +20,8 @@ class CosSimMapper extends Mapper[LongWritable, Text, Text, Text]{
     for(i <- 0 until wordVectors.length) {
       for(j <- i + 1 until wordVectors.length) {
         val ((w1, w2),sim) = similarity(wordVectors(i), wordVectors(j))
-        if(sim > 0.4) {
-          context.write(new Text(w1), new Text(s"$w2:${wordVectors(i).mkString("[",",","]")}:${wordVectors(j).mkString("[",",","]")}"))
+        if(sim > 0.4) { // config
+          context.write(new Text(w1), new Text(s"$w2,$sim"))
         }
       }
     }
