@@ -12,6 +12,7 @@ class EmbeddingReducer extends Reducer[Text, Text, Text, Text] {
   }
   override def reduce(key: Text, values: lang.Iterable[Text], context: Reducer[Text, Text, Text, Text]#Context): Unit = {
     val acc = new Array[Double](100)
+    // average the vectors for each word
     values.asScala.foreach(value => {
       val vec = convertVec2Arr(value.toString)
       for (i <- 0 until 100) {

@@ -7,7 +7,6 @@ import org.apache.hadoop.mapreduce.Mapper
 import util.StrUtil
 
 class StatMapper extends Mapper[LongWritable, Text, Text, LongWritable] {
-  // Define a constant value for the output
   private val one = new LongWritable(1)
   private val registry = Encodings.newDefaultEncodingRegistry()
   private val encoding = registry.getEncoding(EncodingType.CL100K_BASE)

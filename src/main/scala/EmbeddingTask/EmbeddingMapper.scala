@@ -32,7 +32,8 @@ class EmbeddingMapper extends Mapper[LongWritable, Text, Text, Text] {
       util.encoding2String(encoded)
     }).mkString(" ")
     longSentence.add(res)
-    //context.write(key, new Text(res))
+
+    // train the Word2Vec model
     val word2Vec = new Word2Vec.Builder()
       .minWordFrequency(minWordFrequency)
       .tokenizerFactory(new DefaultTokenizerFactory())
@@ -42,6 +43,8 @@ class EmbeddingMapper extends Mapper[LongWritable, Text, Text, Text] {
       .seed(seed)
       .build()
     word2Vec.fit()
+
+    // For every word in the vocabulary emit the learnt embedding
     word2Vec.getVocab.words().forEach(word => {
       val vec = word2Vec.getWordVector(word)
       context.write(new Text(encoding.decode(util.decodeEncoding2String(word))), new Text(vec.mkString(",")))
