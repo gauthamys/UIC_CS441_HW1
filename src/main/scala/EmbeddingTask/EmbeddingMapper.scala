@@ -2,6 +2,7 @@ package EmbeddingTask
 
 import com.knuddels.jtokkit.Encodings
 import com.knuddels.jtokkit.api.EncodingType
+import com.typesafe.config.ConfigFactory
 import org.apache.hadoop.io.{LongWritable, Text}
 import org.apache.hadoop.mapreduce.Mapper
 
@@ -17,6 +18,11 @@ class EmbeddingMapper extends Mapper[LongWritable, Text, Text, Text] {
   private val registry = Encodings.newDefaultEncodingRegistry()
   private val encoding = registry.getEncoding(EncodingType.CL100K_BASE)
   private val util = new StrUtil()
+  private val conf = ConfigFactory.load()
+  private val seed = conf.getInt("Embedding.seed")
+  private val layerSize = conf.getInt("Embedding.layerSize")
+  private val windowSize = conf.getInt("Embedding.windowSize")
+  private val minWordFrequency = conf.getInt("Embedding.minWordFrequency")
 
   override def map(key: LongWritable, value: Text, context: Mapper[LongWritable, Text, Text, Text]#Context): Unit = {
     val longSentence = new ListBuffer[String].asJava
@@ -28,12 +34,12 @@ class EmbeddingMapper extends Mapper[LongWritable, Text, Text, Text] {
     longSentence.add(res)
     //context.write(key, new Text(res))
     val word2Vec = new Word2Vec.Builder()
-      .minWordFrequency(1)
+      .minWordFrequency(minWordFrequency)
       .tokenizerFactory(new DefaultTokenizerFactory())
       .iterate(new CollectionSentenceIterator(longSentence))
-      .layerSize(100)
-      .windowSize(5)
-      .seed(42)
+      .layerSize(layerSize)
+      .windowSize(windowSize)
+      .seed(seed)
       .build()
     word2Vec.fit()
     word2Vec.getVocab.words().forEach(word => {

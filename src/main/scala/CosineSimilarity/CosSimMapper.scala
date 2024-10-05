@@ -1,9 +1,14 @@
 package CosineSimilarity
 
+import com.typesafe.config.ConfigFactory
 import org.apache.hadoop.io.{LongWritable, Text}
 import org.apache.hadoop.mapreduce.Mapper
 
 class CosSimMapper extends Mapper[LongWritable, Text, Text, Text]{
+  private val conf = ConfigFactory.load()
+  private val threshold = conf.getDouble("CosSim.threshold")
+  private val vecSep = conf.getString("CosSim.vecSep")
+
   private def convertWordVecToPair(s: String): (String, Array[Double]) = {
     val sn = s.replace("[", "").replace("]", "")
     (sn.split(":")(0), sn.split(":")(1).split(",").map(n => n.toDouble))
@@ -16,11 +21,11 @@ class CosSimMapper extends Mapper[LongWritable, Text, Text, Text]{
     ((w1, w2), vec1.zip(vec2).map { case (a, b) => a * b }.sum / (modVec1 * modVec2))
   }
   override def map(key: LongWritable, value: Text, context: Mapper[LongWritable, Text, Text, Text]#Context): Unit = {
-    val wordVectors = value.toString.split("%")
+    val wordVectors = value.toString.split(vecSep)
     for(i <- 0 until wordVectors.length) {
       for(j <- i + 1 until wordVectors.length) {
         val ((w1, w2),sim) = similarity(wordVectors(i), wordVectors(j))
-        if(sim > 0.1) { // config
+        if(sim > threshold) { // config
           context.write(new Text(w1), new Text(s"$w2,$sim"))
         }
       }

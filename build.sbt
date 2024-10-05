@@ -9,6 +9,7 @@ lazy val root = project
     scalaVersion := scala2Version,
     libraryDependencies ++= Seq(
       "org.scalameta" %% "munit" % "1.0.0" % Test,
+      "com.typesafe" % "config" % "1.4.3",
       "com.knuddels" % "jtokkit" % "1.1.0",
 
       "org.deeplearning4j" % "deeplearning4j-nlp" % "1.0.0-M2.1",
