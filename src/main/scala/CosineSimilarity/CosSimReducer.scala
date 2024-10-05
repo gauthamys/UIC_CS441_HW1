@@ -13,7 +13,7 @@ class CosSimReducer extends Reducer[Text, Text, Text, Text]{
       val arr = value.toString.split(",")
       val w2 = arr(0)
       val sim = arr(1)
-      candidates += (w2, sim)
+      candidates.addOne((w2, sim.toDouble))
     })
     val sortedArray = candidates.sortBy(-_._2)
     var resText = ""
