@@ -17,8 +17,8 @@ class CosSimReducer extends Reducer[Text, Text, Text, Text]{
     })
     val sortedArray = candidates.sortBy(-_._2)
     var resText = ""
-    for(i <- 0 until 5) {
-      resText += sortedArray(i)._1 + ","
+    if(candidates.nonEmpty) {
+      resText += sortedArray.head._1
     }
     context.write(key, new Text(resText))
   }
