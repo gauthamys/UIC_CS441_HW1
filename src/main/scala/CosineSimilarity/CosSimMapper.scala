@@ -9,11 +9,11 @@ class CosSimMapper extends Mapper[LongWritable, Text, Text, Text]{
   private val threshold = conf.getDouble("CosSim.threshold")
   private val vecSep = conf.getString("CosSim.vecSep")
 
-  private def convertWordVecToPair(s: String): (String, Array[Double]) = {
+  def convertWordVecToPair(s: String): (String, Array[Double]) = {
     val sn = s.replace("[", "").replace("]", "")
     (sn.split(":")(0), sn.split(":")(1).split(",").map(n => n.toDouble))
   }
-  private def similarity(v1: String, v2: String): ((String, String), Double) = {
+  def similarity(v1: String, v2: String): ((String, String), Double) = {
     val (w1, vec1) = convertWordVecToPair(v1)
     val (w2, vec2) = convertWordVecToPair(v2)
     val modVec1 = math.sqrt(vec1.map(x => x * x).sum)

@@ -13,7 +13,7 @@ As part of UIC-CS441 Engineering Distributed Objects for Cloud Computing, this p
 - Sharding Strategy - Shard the file into n lines where each line contains 100,000 words
 - Tokenization Strategy - Split each line into words
 - Encoding and Training - JTokkit and Deeplearning4j
-- Testing Framework - Mockito
+- Testing Framework - munit
 - Config - TypeSafe Config
 - Logging - Sl4j
 
