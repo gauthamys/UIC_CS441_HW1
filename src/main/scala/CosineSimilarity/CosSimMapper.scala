@@ -3,11 +3,13 @@ package CosineSimilarity
 import com.typesafe.config.ConfigFactory
 import org.apache.hadoop.io.{LongWritable, Text}
 import org.apache.hadoop.mapreduce.Mapper
+import org.slf4j.{Logger, LoggerFactory}
 
 class CosSimMapper extends Mapper[LongWritable, Text, Text, Text]{
   private val conf = ConfigFactory.load()
   private val threshold = conf.getDouble("CosSim.threshold")
   private val vecSep = conf.getString("CosSim.vecSep")
+  private val logger: Logger = LoggerFactory.getLogger(this.getClass.getName)
 
   def convertWordVecToPair(s: String): (String, Array[Double]) = {
     val sn = s.replace("[", "").replace("]", "")
@@ -22,6 +24,7 @@ class CosSimMapper extends Mapper[LongWritable, Text, Text, Text]{
   }
   override def map(key: LongWritable, value: Text, context: Mapper[LongWritable, Text, Text, Text]#Context): Unit = {
     val wordVectors = value.toString.split(vecSep)
+    logger.info("computing similarities")
     for(i <- 0 until wordVectors.length) {
       for(j <- i + 1 until wordVectors.length) {
         val ((w1, w2),sim) = similarity(wordVectors(i), wordVectors(j))

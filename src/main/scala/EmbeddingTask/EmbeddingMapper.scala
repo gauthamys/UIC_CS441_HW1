@@ -5,6 +5,7 @@ import com.knuddels.jtokkit.api.EncodingType
 import com.typesafe.config.ConfigFactory
 import org.apache.hadoop.io.{LongWritable, Text}
 import org.apache.hadoop.mapreduce.Mapper
+import org.slf4j.{Logger, LoggerFactory}
 
 import util.StrUtil
 import org.deeplearning4j.models.word2vec.Word2Vec
@@ -15,6 +16,7 @@ import scala.collection.mutable.ListBuffer
 import scala.jdk.CollectionConverters._
 
 class EmbeddingMapper extends Mapper[LongWritable, Text, Text, Text] {
+  private val logger: Logger = LoggerFactory.getLogger(this.getClass.getName)
   private val registry = Encodings.newDefaultEncodingRegistry()
   private val encoding = registry.getEncoding(EncodingType.CL100K_BASE)
   private val util = new StrUtil()
@@ -34,6 +36,7 @@ class EmbeddingMapper extends Mapper[LongWritable, Text, Text, Text] {
     longSentence.add(res)
 
     // train the Word2Vec model
+    logger.info("Training the word2vec model ...")
     val word2Vec = new Word2Vec.Builder()
       .minWordFrequency(minWordFrequency)
       .tokenizerFactory(new DefaultTokenizerFactory())
